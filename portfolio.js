@@ -133,3 +133,53 @@ window.addEventListener("scroll",()=>{
 
 buildFilters();
 renderWheel();
+const revealTargets = document.querySelectorAll(
+  ".section-heading, .capability-card, .agenda-card, .research-focus, .paper-card, .wheel-frame, .career-card, .recognition-item, .education-card, .about-context, .contribution-grid article, .internship-preference, .closing-section > div"
+);
+revealTargets.forEach((element, index) => {
+  element.classList.add("reveal-item");
+  element.style.setProperty("--reveal-delay", `${(index % 4) * 80}ms`);
+});
+
+const revealObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("is-visible");
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: "0px 0px -6% 0px" });
+revealTargets.forEach(element => revealObserver.observe(element));
+
+const navLinks = [...document.querySelectorAll(".topbar nav a")];
+const navSections = navLinks.map(link => document.querySelector(link.getAttribute("href"))).filter(Boolean);
+const navObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    navLinks.forEach(link => link.classList.toggle("is-current", link.getAttribute("href") === `#${entry.target.id}`));
+  });
+}, { rootMargin: "-32% 0px -58% 0px", threshold: 0 });
+navSections.forEach(section => navObserver.observe(section));
+
+document.querySelectorAll(".capability-card, .agenda-card, .paper-card, .career-card, .recognition-item, .contribution-grid article").forEach(card => {
+  card.addEventListener("pointermove", event => {
+    const rect = card.getBoundingClientRect();
+    card.style.setProperty("--pointer-x", `${event.clientX - rect.left}px`);
+    card.style.setProperty("--pointer-y", `${event.clientY - rect.top}px`);
+  }, { passive: true });
+});
+
+const heroArt = document.querySelector(".hero-art");
+if (heroArt && matchMedia("(pointer:fine)").matches && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  document.querySelector(".hero").addEventListener("pointermove", event => {
+    const rect = heroArt.getBoundingClientRect();
+    const dx = (event.clientX - (rect.left + rect.width / 2)) / rect.width;
+    const dy = (event.clientY - (rect.top + rect.height / 2)) / rect.height;
+    heroArt.style.setProperty("--hero-x", `${dx * 12}px`);
+    heroArt.style.setProperty("--hero-y", `${dy * 12}px`);
+  }, { passive: true });
+  document.querySelector(".hero").addEventListener("pointerleave", () => {
+    heroArt.style.setProperty("--hero-x", "0px");
+    heroArt.style.setProperty("--hero-y", "0px");
+  });
+}
