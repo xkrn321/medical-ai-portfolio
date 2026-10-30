@@ -7,7 +7,7 @@
 - `许库兰_医学AI实习简历.pdf`：两页 A4 详细投递版简历。
 - `许库兰_医学AI实习简历.docx`：可编辑简历。
 - `项目总览.md`：项目记录、研究方向与 AI 工作方式。
-- `assets/`：本人照片、和田药茶项目交流照片及项目配图。
+- `assets/`：本人照片、和田药茶项目交流照片，以及 7 张版块图和 15 张项目独立封面。
 
 线上作品集：[打开网站](https://shukulan-lab.zys16889.chatgpt.site)
 本草数字标本馆：[打开网站](https://herbarium-shizhen.netlify.app/)
